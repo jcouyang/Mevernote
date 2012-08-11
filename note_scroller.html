@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		
+		<!-- THEME UTILITY -->
+		<link rel="stylesheet" href="./_themes/utils/loader.css" type="text/css">
+		<!-- END THEME UTILITY -->
+		
+		<title>Take a note</title>
+
+		<style>
+			body, html 
+			{
+				background-color: #190800;
+			}
+			
+			#wrapper 
+			{
+				position: relative;
+				z-index: 1;
+				width: 100%;
+				background-color: #190800;
+				overflow: hidden;
+			}
+			
+			#scrollContent 
+			{
+				position: relative;
+				height: 100%;
+			}
+			
+			.item 
+			{
+				float: left;
+				
+			}
+			
+			.item .image 
+			{
+				float: left;
+				
+				margin-right: 10px;
+				
+				width: 80px;
+				height: 60px;
+			}
+		</style>
+		
+		<!-- THEME UTILITY -->
+		<script type="text/javascript" src="./_themes/utils/loader.js"></script>
+		<!-- END THEME UTILITY -->
+		
+		<!-- CORE -->
+		<!-- Can be replaced by wink.min.js -->
+    <script type="text/javascript" src="./wink_1.4.2.min.js"></script>
+
+    <script type="text/javascript" src="./ux/window/js/window.js"></script>
+		
+		<script type="text/javascript" src="./ux/movementtracker/js/movementtracker.js"></script>
+		<script type="text/javascript" src="./ux/inertia/js/inertia.js"></script>
+		<script type="text/javascript" src="./scroller.js"></script>
+
+		<script type="text/javascript">
+			var headerHeight = 55;
+		
+			var scrollerHelper = {
+				nbItem: 3,
+				items: [],
+				limit: 0,
+				scroller: null,
+
+				getNearestItem: function() {
+					var spos = this.scroller.getPosition();
+					var d = Number.MAX_VALUE;
+					var nearest = 0;
+					for (var i = 0; i < this.items.length; i++) {
+						var a = Math.min(Math.max(this.items[i].position, this.limit), 0);
+						var b = spos.x;
+						var dist = Math.abs(a - b);
+						if (dist > d) {
+							break;
+						}
+						d = dist;
+						nearest = i;
+					}
+					return nearest;
+				},
+
+				goToItem: function(index, duration) {
+					var position = Math.min(Math.max(this.items[index].position, this.limit), 0);
+					this.scroller.scrollTo(position, null, duration);
+				},
+
+				onStopSliding: function() {
+					var n = this.getNearestItem();
+					var spos = this.scroller.getPosition();
+					
+					if (spos.x != this.items[n].position && n != 0 && n != this.items.length - 1) {
+						this.goToItem(n, 200);
+					}
+				},
+
+				buildContent: function(scrollContent) {
+					var mg = 10;
+					var pd = 10;
+					var w = wink.ux.window.width;
+					w = w - (w / 5);
+					var h = wink.ux.window.height - headerHeight - 50;
+				
+					var size = 0;
+					var windowHeight = window.innerHeight;
+					var sources = [ "s1", "s2","s3"];
+					
+					for (var i = 0; i < this.nbItem; i++) {
+						var div = document.createElement('div');
+
+						var s = sources[i % sources.length];
+						div.innerHTML = wink.byId(s).innerHTML;
+						
+						div.style["margin"] = mg + "px " + mg + "px " + mg + "px " + mg + "px";
+						div.style["padding"] = pd + "px " + pd + "px " + pd + "px " + pd + "px";
+						div.style["width"] = w + "px";
+						div.style["height"] = h + "px";
+						wink.addClass(div, 'w_bg_light w_bloc item');
+
+						var lg = (w + (mg * 2) + (pd * 2)) + 1;
+						var p = -(i * lg);
+						p = p + (wink.ux.window.width / 2) - (lg / 2);
+						p = wink.math.round(p, 0);
+						this.items.push({
+							node: div,
+							position: p
+						});
+
+						scrollContent.appendChild(div);
+						size += div.offsetWidth + (mg * 2);
+					}
+					scrollContent.style.width = size + "px";
+					this.limit = -(size - wink.ux.window.width);
+				}
+			};
+
+			var init = function() {
+				window.scrollTo(0,0);
+
+				wink.error.logLevel = 1;
+
+				scrollerHelper.buildContent(wink.byId('scrollContent'));
+
+				var heightRemains = wink.ux.window.height - headerHeight;
+				wink.byId('wrapper').style.height = heightRemains + "px";
+				
+				var properties = {
+					target: "scrollContent",
+					direction: "x",
+					callbacks: {
+						stopSliding: { context: scrollerHelper, method: 'onStopSliding' }
+					},
+					scrollbars: {
+						backgroundColor: 'rgba(255, 255, 255, 0.8)',
+						borderColor: 'rgba(204, 174, 159, 0.8)'
+					}
+				};
+				scrollerHelper.scroller = new wink.ui.layout.Scroller(properties);
+			};
+		</script>
+	</head>
+	
+	<body onload="setTimeout(init, 1);">
+		<div id="header" class="w_box w_header w_bg_dark">
+			<span id="title">scroller</span>
+			<input type="button" value="home" class="w_button w_radius w_bg_light w_right" onclick="window.location='../../../..?theme='+theme"/>
+		</div>
+		
+		<div id="wrapper">
+			<div id="scrollContent"></div>
+		</div>
+		<div id="sources" style="display: none;">
+			<div id="s1">
+        <h3>Markdown</h3>
+				<textarea id="inputPane" cols="80" rows="20" class="pane" style="width:100%">Using this tool
+          ---------------
+
+          This page lets you create HTML by entering text in a simple format that's easy to read and write.
+
+          - Type Markdown text in the left window
+          - See the HTML in the right
+
+          Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site] [1]:
+
+          &gt; The overriding design goal for Markdown's
+          &gt; formatting syntax is to make it as readable 
+          &gt; as possible. The idea is that a
+          &gt; Markdown-formatted document should be
+          &gt; publishable as-is, as plain text, without
+          &gt; looking like it's been marked up with tags
+          &gt; or formatting instructions.
+
+          This document is written in Markdown; you can see the plain-text version on the left.  To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.  You can see a Markdown syntax guide by switching the right-hand window from *Preview* to *Syntax Guide*.
+
+          Showdown is a Javascript port of Markdown.  You can get the full [source code] by clicking on the version number at the bottom of the page.
+
+          **Start with a [blank page] or edit this document in the left window.**
+
+          [john gruber]: http://daringfireball.net/
+          [1]: http://daringfireball.net/projects/markdown/
+          [source code]: http://www.attacklab.net/showdown-v0.9.zip
+          [blank page]: ?blank=1 "Clear all text"
+
+        </textarea>
+			</div>
+			<div id="s2">
+        <h3>Preview<h3>
+				<textarea id="previewPane" class="pane" cols="80" rows="20" readonly="readonly" style="width:100%;height:100%; "></textarea>
+			</div>
+      <div id="s3">
+        <h3>HTML<h3>
+				<textarea id="outputPane" class="pane" cols="80" rows="20" readonly="readonly" style="width:100%; "></textarea>
+			</div>
+		</div>
+	</body>
+</html>
