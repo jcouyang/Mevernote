@@ -79,7 +79,7 @@ function startGui() {
 	convertTextSetting.onchange = onConvertTextSettingChanged;
 	convertTextButton.onclick = onConvertTextButtonClicked;
 	paneSetting.onchange = onPaneSettingChanged;
-	window.onresize = setPaneHeights;
+	// window.onresize = setPaneHeights;
 
 	// First, try registering for keyup events
 	// (There's no harm in calling onInput() repeatedly)
@@ -111,7 +111,7 @@ function startGui() {
 
 	// poll for changes in font size
 	// this is cheap; do it often
-	window.setInterval(setPaneHeights,250);
+	// window.setInterval(setPaneHeights,250);
 
 	// start with blank page?
 	if (top.document.location.href.match(/\?blank=1$/))
@@ -154,12 +154,14 @@ function convertText() {
 	var startTime = new Date().getTime();
 
 	// Do the conversion
+	console.log(text)
 	text = converter.makeHtml(text);
-
+	console.log(text)
 	// display processing time
 	var endTime = new Date().getTime();	
 	processingTime = endTime - startTime;
-	document.getElementById("processingTime").innerHTML = processingTime+" ms";
+	console.log(processingTime);
+	// document.getElementById("processingTime").innerHTML = processingTime+" ms";
 
 	// save proportional scroll positions
 	saveScrollPositions();
@@ -207,7 +209,7 @@ function onPaneSettingChanged() {
 	top[paneSetting.value].style.display = "block";
 
 	lastRoomLeft = 0;  // hack: force resize of new pane
-	setPaneHeights();
+	// setPaneHeights();
 
 	if (paneSetting.value == "outputPane") {
 		// Update output pane
