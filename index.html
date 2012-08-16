@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="./css/menu.css" type="text/css">
 		<link rel="stylesheet" href="./css/tests.css" type="text/css">
 		<link rel="stylesheet" href="./css/test.css" type="text/css">
-		<link rel="stylesheet" href="./wink/ui/layout/slidingpanels/css/slidingpanels.css" type="text/css">
+		<link rel="stylesheet" href="./css/slidingpanels.css" type="text/css">
 		<title>Take a note</title>
 
 		<style>
@@ -151,7 +151,7 @@
 				var node = document.createElement('li')
 						wink.addClass(node,'w_list_item w_border_bottom w_bg_light');
 
-				node.innerHTML = '<a href="#" onclick="addNewNote()"><img src="images/icon/glyphicons_030_pencil.png"/><label>Create New Note</label></a>';
+				node.innerHTML = '<a href="#" onclick="addNewNote()"><label>Create New Note</label></a>';
 				sectionNode.appendChild(node);
 				if (mevernote.length > 0) 
 				{
@@ -183,6 +183,26 @@
 
 			}
 
+			mailToEvernote = function()
+			{
+				if("undefind" == typeof blackberry){
+									try {
+										remote = new blackberry.transport.RemoteFunctionCall("blackberry/invoke/invoke");
+
+										subject = "Hello World!";
+										body = "Let's do this thing!";
+										alert(body)
+										remote.addParam("appType", "mailto:?Subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
+
+										remote.makeAsyncCall();
+									} catch (err) {
+										console.write("fire: " + err);
+									}
+				}
+				else{
+					window.open('mailto:oyanglulu@gmail.com')
+				}
+			}
 			addNewNote = function(title,markdown)
 			{
 				slide('edit_note');
@@ -210,7 +230,7 @@
 				{ url: './wink/api/storage/js/safaridb.js', type: 'js', group: 2 },
 				{ url: './wink/api/storage/js/gearsdb.js', type: 'js', group: 2 },
 				// { url: './ux/movementtracker/js/movementtracker.js', type: 'js', group: 2 },
-				// { url: './ux/inertia/js/inertia.js', type: 'js', group: 2 },
+				{ url: './bookmarkClipper.js', type: 'js', group: 2 },
 				{ url: './acebuild/ace.js', type: 'js', group: 2 },
 				{ url: './js/config.js', type: 'js', group: 2 },
 				{ url: './js/splash.js', type: 'js', group: 2 },
@@ -353,7 +373,9 @@
 									<option value="outputPane">HTML Output</option>
 									<option value="syntaxPane">Syntax Guide</option>
 								</select>
-
+								<br>
+								<input type="mail" id="evernote-mail"/>
+								<button onclick="mailToEvernote();">Evernote</button>
 							</span>
 						</div> 
 						<div id="handlebar">
