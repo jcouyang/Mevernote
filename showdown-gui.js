@@ -45,7 +45,7 @@
 //
 // Register for onload
 //
-window.onload = startGui;
+// window.onload = startGui;
 
 
 //
@@ -70,7 +70,7 @@ function startGui() {
 	convertTextButton = document.getElementById("convertTextButton");
 	paneSetting = document.getElementById("paneSetting");
 
-	inputPane = document.getElementById("inputPane");
+	inputPane = document.getElementById("inputPane").firstChild;
 	previewPane = document.getElementById("previewPane");
 	outputPane = document.getElementById("outputPane");
 	syntaxPane = document.getElementById("syntaxPane");
@@ -87,27 +87,27 @@ function startGui() {
 
 	// In case we can't capture paste events, poll for them
 	var pollingFallback = window.setInterval(function(){
-		if(inputPane.value != lastText)
+		if(editor.getValue() != lastText)
 			onInput();
 	},1000);
 
 	// Try registering for paste events
-	inputPane.onpaste = function() {
-		// It worked! Cancel paste polling.
-		if (pollingFallback!=undefined) {
-			window.clearInterval(pollingFallback);
-			pollingFallback = undefined;
-		}
-		onInput();
-	}
+	// inputPane.onpaste = function() {
+	// 	// It worked! Cancel paste polling.
+	// 	if (pollingFallback!=undefined) {
+	// 		window.clearInterval(pollingFallback);
+	// 		pollingFallback = undefined;
+	// 	}
+	// 	onInput();
+	// }
 
 	// Try registering for input events (the best solution)
-	if (inputPane.addEventListener) {
-		// Let's assume input also fires on paste.
-		// No need to cancel our keyup handlers;
-		// they're basically free.
-		inputPane.addEventListener("input",inputPane.onpaste,false);
-	}
+	// if (inputPane.addEventListener) {
+	// 	// Let's assume input also fires on paste.
+	// 	// No need to cancel our keyup handlers;
+	// 	// they're basically free.
+	// 	inputPane.addEventListener("input",inputPane.onpaste,false);
+	// }
 
 	// poll for changes in font size
 	// this is cheap; do it often
@@ -115,7 +115,7 @@ function startGui() {
 
 	// start with blank page?
 	if (top.document.location.href.match(/\?blank=1$/))
-		inputPane.value = "";
+		editor.setValue("");
 
 	// refresh panes to avoid a hiccup
 	onPaneSettingChanged();
@@ -127,7 +127,7 @@ function startGui() {
 	convertText();
 
 	// give the input pane focus
-	inputPane.focus();
+	// editor.focus();
 
 	// start the other panes at the top
 	// (our smart scrolling moved them to the bottom)
@@ -142,7 +142,7 @@ function startGui() {
 
 function convertText() {
 	// get input text
-	var text = inputPane.value;
+	var text = editor.getValue();
 	
 	// if there's no change to input, cancel conversion
 	if (text && text == lastText) {
@@ -154,13 +154,13 @@ function convertText() {
 	var startTime = new Date().getTime();
 
 	// Do the conversion
-	console.log(text)
+	// console.log(text)
 	text = converter.makeHtml(text);
-	console.log(text)
+	// console.log(text)
 	// display processing time
 	var endTime = new Date().getTime();	
 	processingTime = endTime - startTime;
-	console.log(processingTime);
+	// console.log(processingTime);
 	// document.getElementById("processingTime").innerHTML = processingTime+" ms";
 
 	// save proportional scroll positions
@@ -197,7 +197,7 @@ function onConvertTextButtonClicked() {
 	lastText = "";
 
 	convertText();
-	inputPane.focus();
+	// editor.focus();
 }
 
 function onPaneSettingChanged() {

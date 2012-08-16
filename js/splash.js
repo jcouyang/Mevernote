@@ -13,7 +13,7 @@ ks.splash = (function()
 	{
 		wink.byId('wrapper').style.visibility = 'visible';
 		wink.byId('splash').style.visibility = 'visible';
-		wink.byId('orientation').style.visibility = 'visible';
+		// wink.byId('orientation').style.visibility = 'visible';
 		
 		ks.utils.sizeElements();
 		ks.navigation.animate(200);

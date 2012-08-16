@@ -42,7 +42,7 @@ ks.main = (function()
 	main.showContainer = function()
 	{
 		wink.ux.window._init();
-		wink.subscribe('/window/events/orientationchange', {context: ks.main, method: 'handleOrientationChange'});
+		// wink.subscribe('/window/events/orientationchange', {context: ks.main, method: 'handleOrientationChange'});
 		
 		wink.subscribe('/history/events/back', {context: ks.main, method: 'slideBackFromHistory'});
 		wink.subscribe('/history/events/forward', {context: ks.main, method: 'slideToFromHistory'});
@@ -100,20 +100,20 @@ ks.main = (function()
 	/**
 	 * 
 	 */
-	main.handleOrientationChange = function()
-	{
-		scrollTo(0, 0, 0);
+	// main.handleOrientationChange = function()
+	// {
+	// 	scrollTo(0, 0, 0);
 		
-		if ( wink.ux.window.orientation == 'horizontal' )
-		{
-			wink.byId('orientation').style.display = 'block';
-			wink.byId('wrapper').style.display = 'none';
-		} else
-		{
-			wink.byId('orientation').style.display = 'none';
-			wink.byId('wrapper').style.display = 'block';
-		}
-	};
+	// 	if ( wink.ux.window.orientation == 'horizontal' )
+	// 	{
+	// 		wink.byId('orientation').style.display = 'block';
+	// 		wink.byId('wrapper').style.display = 'none';
+	// 	} else
+	// 	{
+	// 		wink.byId('orientation').style.display = 'none';
+	// 		wink.byId('wrapper').style.display = 'block';
+	// 	}
+	// };
 	
 	return main;
 })();

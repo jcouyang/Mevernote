@@ -1,1 +1,0 @@
-wink.byId("title").innerHTML = "This is the modified title (changed by script test1.js)";

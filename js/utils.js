@@ -29,6 +29,7 @@ ks.utils =
 		wink.byId('about_scroller').style.width = _w - 81 + 'px';
 		
 		wink.byId('container').style.height = _h + 'px';
+		wink.byId('inputPane').style.height = _h + 'px';
 		
 		wink.byId('options').style.width = (_w - 81) + 'px';
 	
