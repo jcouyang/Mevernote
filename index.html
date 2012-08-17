@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="./css/menu.css" type="text/css">
 		<link rel="stylesheet" href="./css/tests.css" type="text/css">
 		<link rel="stylesheet" href="./css/test.css" type="text/css">
-		<link rel="stylesheet" href="./css/slidingpanels.css" type="text/css">
+		<link rel="stylesheet" href="./wink/ui/layout/slidingpanels/css/slidingpanels.css" type="text/css">
 		<title>Take a note</title>
 
 		<style>
@@ -124,9 +124,9 @@
 			
 			focusEditor = function()
 			{
-				// editor.clearSelection();
-				// editor.focus()
-				// convertText();
+				editor.clearSelection();
+				editor.focus()
+				convertText();
 			}
 			fillText = function(note)
 			{
@@ -224,7 +224,7 @@
 			[
 				{ url: './js/wink-1.4.2-kitchensink-default.min.js', type: 'js', group: 0 },
 				{ url: './js/main.js', type: 'js', group: 1 },
-				{ url: './slidingpanels.js', type: 'js', group: 2 },
+				{ url: './wink/ui/layout/slidingpanels/js/slidingpanels.js', type: 'js', group: 2 },
 
 				{ url: './wink/api/storage/js/storage.js', type: 'js', group: 2 },
 				{ url: './wink/api/storage/js/safaridb.js', type: 'js', group: 2 },
@@ -283,11 +283,11 @@
 						storage.connect(descriptor);
 						getNotes();
 						
-						console.log('hreere2')
+						// console.log('hreere2')
 						editor = ace.edit("inputPane");
     					editor.setTheme("ace/theme/twilight");
-    					editor.getSession().setMode("ace/mode/javascript");
-						console.log('here first')
+    					editor.getSession().setMode("ace/mode/markdown");
+						// console.log('here first')
 						startGui();
 					}, 
 					{
@@ -320,7 +320,7 @@
 				<span style="position: absolute; bottom: -15px; right: -15px; font-size: 118px; color: #343333">Mevernote</span>
 			</div>
 			
-			<div id="options" class="panel">
+			<div id="options" class="panel" style="background-image: url(http://dillinger.io/img/notebook_paper_200x200.gif); ">
 				<div style="height: 35px; width: 90%; border-bottom: 1px dashed #999; padding-top: 8px; margin-left: 15px">
 					<span class="letters">
 						<span class="firstLetter">A</span>bout	
@@ -329,7 +329,25 @@
 				<div id="about_scroller" class="wrapper">
 					<div id="aboutContent">
 						<textarea id="syntaxPane" class="w_textarea w_border w_radius w_bg_dark" cols="80" rows="20" readonly="readonly" style="width: 100%; "></textarea>
-							<div id="previewPane" class="pane"></div>
+							<div id="previewPane" class="pane" >
+							<p>
+							Wink Toolkit is a lightweight JavaScript toolkit which will help you build great mobile web apps.
+						</p>
+						<p>
+							It is designed and developed to meet the specific constraints of the mobile environment.
+						</p>
+						<p>
+							The toolkit's core offers all the basic functionalities a mobile developer would need from touch event handling to DOM manipulation objects or CSS transforms utilities.
+						</p>
+						<p>
+							Additionally, it offers a wide range of UI components are offered to help you improve the look and feel of a web app, or simply to experiment with new user interactions.
+						</p>
+						<p>
+							Gesture recognition, HTML5 features like geolocation or local storage, multitouch events and many others are also part of the Wink Toolkit.
+						</p>
+						<p>
+							The project currently targets iOS (iPhone), Android platforms, Blackberry (6+), Bada...
+						</p></div>
 							<textarea id="outputPane" class="w_textarea w_border w_radius w_bg_dark" cols="80" rows="20" readonly="readonly" style="width: 100%; "></textarea>
 					</div>
 
