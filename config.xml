@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="2.0.0.0">
+  <author href="http://geogeo.github.com" 
+          rim:copyright="Copyright 2012 JCOY">Jichao Ouyang</author>
+  <name>Mevernote</name>
+  <description>
+    Write down your note in Markdown and Send it to Evernote
+  </description>
+
+  <rim:orientation mode="auto"/>
+
+  <icon src="icons/mlogo.png"/>
+
+  <content src="index.html"/>
+
+  <access uri ="*"/>
+
+</widget>

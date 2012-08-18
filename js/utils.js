@@ -24,12 +24,18 @@ ks.utils =
 		
 		wink.byId('tests_scroller').style.height = _h - 64 + 'px';
 		wink.byId('tests_scroller').style.width = _w + 'px';
+		wink.byId('list_scroller').style.height = _h - 64 + 'px';
+		wink.byId('list_scroller').style.width = _w + 'px';
 		
-		wink.byId('about_scroller').style.height = _h - 54 + 'px';
+		wink.byId('about_scroller').style.height = _h -2 + 'px';
 		wink.byId('about_scroller').style.width = _w - 81 + 'px';
 		
 		wink.byId('container').style.height = _h + 'px';
 		wink.byId('inputPane').style.height = _h + 'px';
+		wink.byId('syntaxPane').style.height = _h + 'px';
+		wink.byId('syntaxPane').style.width = '100%';
+		wink.byId('outputPane').style.height = _h + 'px';
+		wink.byId('outputPane').style.width = '100%';
 		
 		wink.byId('options').style.width = (_w - 81) + 'px';
 	

@@ -18,6 +18,7 @@ ks.options = (function()
 				active: false
 			}
 		});
+		ks.about.autoRefresh({active:true,checkDelay:1000});
 	};
 		
 	/**

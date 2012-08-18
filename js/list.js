@@ -17,24 +17,30 @@ ks.list = (function()
 	 */
 	list.init = function() 
 	{
-		ks.utils.sizeElements();
+		// ks.utils.sizeElements();
 		
 		this.build('ui');
 		
 		var properties =
 		{
-			target: "scrollContent", 
+			target: "listContent", 
 			direction: "y",
-			callbacks: 
+			scrollbars:
 			{
-				scrollerTouched:	{ context: this, method: 'stageChanged', arguments: 'scrollerTouched' },
-				scrollerClicked:	{ context: this, method: 'stageChanged', arguments: 'scrollerClicked' },
-				startScrolling:		{ context: this, method: 'stageChanged', arguments: 'startScrolling' },
-				scrolling:			{ context: this, method: 'stageChanged', arguments: 'scrolling' },
-				endScrolling:		{ context: this, method: 'stageChanged', arguments: 'endScrolling' },
-				startSliding:		{ context: this, method: 'stageChanged', arguments: 'startSliding' },
-				stopSliding:		{ context: this, method: 'stageChanged', arguments: 'stopSliding' }
+				active: false
 			}
+			// target: "scrollContent", 
+			// direction: "y",
+			// callbacks: 
+			// {
+			// 	scrollerTouched:	{ context: this, method: 'stageChanged', arguments: 'scrollerTouched' },
+			// 	scrollerClicked:	{ context: this, method: 'stageChanged', arguments: 'scrollerClicked' },
+			// 	startScrolling:		{ context: this, method: 'stageChanged', arguments: 'startScrolling' },
+			// 	scrolling:			{ context: this, method: 'stageChanged', arguments: 'scrolling' },
+			// 	endScrolling:		{ context: this, method: 'stageChanged', arguments: 'endScrolling' },
+			// 	startSliding:		{ context: this, method: 'stageChanged', arguments: 'startSliding' },
+			// 	stopSliding:		{ context: this, method: 'stageChanged', arguments: 'stopSliding' }
+			// }
 		};
 		
 		if ( wink.ua.isMobile && !wink.ua.isIOS )
@@ -46,9 +52,10 @@ ks.list = (function()
 		}
 		
 		ks.scroller = new wink.ui.layout.Scroller(properties);
+		console.log('scroller')
 		
 		ks.options.init();
-		
+		ks.scroller.autoRefresh({active:true,checkDelay:1000});
 		// wink.byId('logo').style.opacity = '1';
 	};
 	

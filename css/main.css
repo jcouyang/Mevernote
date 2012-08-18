@@ -120,10 +120,11 @@ html, body
 
 #options p
 {
-	color: #fff;
-	padding: 5px 15px;
-	text-shadow: #000 0px -1px 0px;	
-	text-indent: 10px;
+	font-size: 13px;
+font-weight: normal;
+line-height: 18px;
+margin-bottom: 5px;
+margin-left:5px;
 }
 
 #tests, #test

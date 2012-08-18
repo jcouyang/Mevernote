@@ -133,6 +133,7 @@ function startGui() {
 	// (our smart scrolling moved them to the bottom)
 	previewPane.scrollTop = 0;
 	outputPane.scrollTop = 0;
+	syntaxPane.scrollTop = 0;
 }
 
 
@@ -169,7 +170,8 @@ function convertText() {
 	// update right pane
 	if (paneSetting.value == "outputPane") {
 		// the output pane is selected
-		outputPane.value = text;
+		outputPanePre.setValue(text);
+		outputPanePre.clearSelection();
 	} else if (paneSetting.value == "previewPane") {
 		// the preview pane is selected
 		previewPane.innerHTML = text;
@@ -213,11 +215,17 @@ function onPaneSettingChanged() {
 
 	if (paneSetting.value == "outputPane") {
 		// Update output pane
-		outputPane.value = lastOutput;
+		outputPanePre.setValue(lastOutput);
+		outputPanePre.clearSelection();
 	} else if (paneSetting.value == "previewPane") {
 		// Update preview pane
 		previewPane.innerHTML = lastOutput;
+	}else{
+		// syntaxPanePre.setValue(lastOutput);
+		syntaxPanePre.setValue(help.value);
+		syntaxPanePre.clearSelection();
 	}
+	restoreScrollPositions();
 }
 
 function onInput() {
@@ -287,6 +295,7 @@ function restoreScrollPositions() {
 
 	setScrollPos(previewPane,previewScrollPos);
 	setScrollPos(outputPane,outputScrollPos);
+	// setScrollPos(syntaxPane,previewScrollPos);
 }
 
 //
@@ -347,5 +356,5 @@ function setPaneHeights() {
 	inputPane.style.height = roomLeft + "px";
 	previewPane.style.height = roomLeft + "px";
 	outputPane.style.height = roomLeft + "px";
-	syntaxPane.style.height = roomLeft + "px";
+	// syntaxPane.style.height = roomLeft + "px";
 }
