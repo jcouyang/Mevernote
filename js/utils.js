@@ -32,10 +32,10 @@ ks.utils =
 		
 		wink.byId('container').style.height = _h + 'px';
 		wink.byId('inputPane').style.height = _h + 'px';
-		wink.byId('outputPane').style.height = _h + 'px';
-		wink.byId('outputPane').style.width = '100%';
 		wink.byId('syntaxPane').style.height = _h + 'px';
 		wink.byId('syntaxPane').style.width = '100%';
+		wink.byId('outputPane').style.height = _h + 'px';
+		wink.byId('outputPane').style.width = '100%';
 		
 		wink.byId('options').style.width = (_w - 81) + 'px';
 	

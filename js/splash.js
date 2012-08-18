@@ -16,10 +16,10 @@ ks.splash = (function()
 		// wink.byId('orientation').style.visibility = 'visible';
 		
 		ks.utils.sizeElements();
-		ks.navigation.animate(200);
+		ks.navigation.animate(100);
 		
-		// wink.fx.applyTransition(wink.byId('logo'), 'opacity', '1ms', '0ms', 'ease-in');
-		// wink.fx.applyTransition(wink.byId('splash'), 'opacity', '1ms', '0ms', 'ease-in');
+		wink.fx.applyTransition(wink.byId('logo'), 'opacity', '500ms', '0ms', 'ease-in');
+		wink.fx.applyTransition(wink.byId('splash'), 'opacity', '500ms', '0ms', 'ease-in');
 		
 		// wink.fx.onTransitionEnd(wink.byId('logo'), this.hide, false);
 		// wink.fx.onTransitionEnd(wink.byId('splash'), this.remove, false);
@@ -28,6 +28,7 @@ ks.splash = (function()
 		wink.fx.translate(wink.byId('container'), 0, 0);
 
 		wink.setTimeout(ks.list, 'init', 500);
+		
 	};
 	
 	/**
@@ -35,6 +36,7 @@ ks.splash = (function()
 	 */
 	splash.hide = function(e)
 	{
+		console.log('hide')
 		e.stopPropagation();
 		wink.byId('splash').style.opacity = '0';
 	};
