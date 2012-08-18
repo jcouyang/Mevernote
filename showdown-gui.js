@@ -169,7 +169,7 @@ function convertText() {
 	// update right pane
 	if (paneSetting.value == "outputPane") {
 		// the output pane is selected
-		outputPane.value = text;
+		outputPanePre.setValue(text);
 	} else if (paneSetting.value == "previewPane") {
 		// the preview pane is selected
 		previewPane.innerHTML = text;
@@ -213,7 +213,7 @@ function onPaneSettingChanged() {
 
 	if (paneSetting.value == "outputPane") {
 		// Update output pane
-		outputPane.value = lastOutput;
+		outputPanePre.setValue(lastOutput);
 	} else if (paneSetting.value == "previewPane") {
 		// Update preview pane
 		previewPane.innerHTML = lastOutput;

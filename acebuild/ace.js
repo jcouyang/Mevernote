@@ -3489,12 +3489,15 @@ var TextInput = function(parentNode, host) {
     if (useragent.isTouchPad)
         text.setAttribute("x-palm-disable-auto-cap", true);
 
+    text.setAttribute("autocorrect","off");
+    text.setAttribute("autocapitalize","off");
+    text.setAttribute("autocomplete","off");
     text.setAttribute("wrap", "off");
 
     text.style.top = "-2em";
     parentNode.insertBefore(text, parentNode.firstChild);
 
-    var PLACEHOLDER = useragent.isIE ? "\x01" : "\x01";
+    var PLACEHOLDER = useragent.isIE ? "\x01 \x01" : "\x01 \x01";
     sendText();
 
     var inCompostion = false;
@@ -3506,6 +3509,7 @@ var TextInput = function(parentNode, host) {
         try {
             if (full) {
                 text.value = PLACEHOLDER;
+                // console.log('reset')
                 text.selectionStart = 0;
                 text.selectionEnd = 1;
             } else 
@@ -3516,19 +3520,36 @@ var TextInput = function(parentNode, host) {
     function sendText(valueToSend) {
         if (!copied) {
             var value = valueToSend || text.value;
+            // console.log(value,value.charAt(0),value.charAt(value.length - 1),value.length);
             if (value) {
                 if (value.length > 1) {
-                    if (value.charAt(0) == PLACEHOLDER)
-                        value = value.substr(1);
-                    else if (value.charAt(value.length - 1) == PLACEHOLDER)
-                        value = value.slice(0, -1);
+                    // console.log(value,value.length);
+                    if (value.charAt(0) == PLACEHOLDER.charAt(0)){
+                        if(value.substring(0,3)==PLACEHOLDER)
+                            value = value.substr(3);
+                        else
+                            value = value.substr(1);
+                        // console.log('begin');
+                        
+                    }
+                        
+                    else if (value.charAt(value.length - 1) == PLACEHOLDER.charAt(0)){
+                        // console.log('end');
+                        if(value.substring(value.length-3,value.length)==PLACEHOLDER)
+                            value = value.slice(0, -3);
+                        else
+                            value = value.slice(0, -1);
+                        
+                    }
+                        
                 }
 
                 if (value && value != PLACEHOLDER) {
+                    // console.log('place',value);
                     if (pasted)
                         host.onPaste(value);
                     else
-                        host.onTextInput(value);
+                        host.onTextInput(value.charAt(0)=='\x01'?value.charAt(1):value.charAt(0));
                 }
             }
         }

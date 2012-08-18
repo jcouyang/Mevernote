@@ -27,6 +27,20 @@
 
 		        width:100%;
 		    }
+		   /* #outputPane { 
+		        margin:0;
+		        
+		        position: absolute;
+
+		        width:100%;
+		    }
+		    #syntaxPane { 
+		        margin:0;
+		        
+		        position: absolute;
+
+		        width:100%;
+		    }*/
 			#wrapper 
 			{
 				position: relative;
@@ -78,6 +92,8 @@
 			var mevernote = {};	
 			var storage;
 			var editor;
+			var outputPanePre;
+			var syntaxPanePre;
 			var slidingPanels;
 			var currentNote;
 			var properties = 
@@ -94,11 +110,12 @@
 			slideBack = function(id)
 			{
 				console.log(currentNote)
+				var title = editor.getValue().split("\n")[0];
 				var value = editor.getValue();
 				if(currentNote=='new'){
-					storage.insert('note', {title:value.substring(0,18)+'...', markdown:value});
+					storage.insert('note', {title:title, markdown:value});
 				}else{
-					storage.update('note', {id:currentNote.id, title:value.substring(0,18)+'...', markdown:value});
+					storage.update('note', {id:currentNote.id, title:title, markdown:value});
 				}
 				
 				slidingPanels.slideBack();
@@ -111,11 +128,13 @@
 				{
 					case 'noteslist':
 						wink.byId('back').style.visibility = 'hidden';
+						wink.byId('evernote').style.visibility = 'hidden';
 						wink.byId('option_toggle').style.visibility = 'hidden';
 						
 						break;
 					default:
 						wink.byId('back').style.visibility = 'visible';
+						wink.byId('evernote').style.visibility = 'visible';
 						wink.byId('option_toggle').style.visibility = 'visible';
 				}
 				
@@ -185,23 +204,23 @@
 
 			mailToEvernote = function()
 			{
-				if("undefind" == typeof blackberry){
-									try {
-										remote = new blackberry.transport.RemoteFunctionCall("blackberry/invoke/invoke");
+				// if("undefind" == typeof blackberry){
+				// 					try {
+				// 						remote = new blackberry.transport.RemoteFunctionCall("blackberry/invoke/invoke");
 
-										subject = "Hello World!";
-										body = "Let's do this thing!";
-										alert(body)
-										remote.addParam("appType", "mailto:?Subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
+				// 						subject = "Hello World!";
+				// 						body = "Let's do this thing!";
+				// 						alert(body)
+				// 						remote.addParam("appType", "mailto:?Subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
 
-										remote.makeAsyncCall();
-									} catch (err) {
-										console.write("fire: " + err);
-									}
-				}
-				else{
-					window.open('mailto:oyanglulu@gmail.com')
-				}
+				// 						remote.makeAsyncCall();
+				// 					} catch (err) {
+				// 						console.write("fire: " + err);
+				// 					}
+				// }
+				// else{
+				// 	window.open('mailto:oyanglulu@gmail.com')
+				// }
 			}
 			addNewNote = function(title,markdown)
 			{
@@ -287,6 +306,12 @@
 						editor = ace.edit("inputPane");
     					editor.setTheme("ace/theme/twilight");
     					editor.getSession().setMode("ace/mode/markdown");
+    					outputPanePre = ace.edit("outputPane");
+    					outputPanePre.setTheme("ace/theme/twilight");
+    					outputPanePre.getSession().setMode("ace/mode/html");
+    					syntaxPanePre = ace.edit("syntaxPane");
+    					syntaxPanePre.setTheme("ace/theme/twilight");
+    					syntaxPanePre.getSession().setMode("ace/mode/markdown");
 						// console.log('here first')
 						startGui();
 					}, 
@@ -299,9 +324,7 @@
 			})();
 			
 			var headerHeight = 110;
-        	// scrollerHelper.goToItem(1);   
-        	
-			
+        	// scrollerHelper.goToItem(1);
 		</script>
 	</head>
 	
@@ -320,35 +343,18 @@
 				<span style="position: absolute; bottom: -15px; right: -15px; font-size: 118px; color: #343333">Mevernote</span>
 			</div>
 			
-			<div id="options" class="panel" style="background-image: url(http://dillinger.io/img/notebook_paper_200x200.gif); ">
-				<div style="height: 35px; width: 90%; border-bottom: 1px dashed #999; padding-top: 8px; margin-left: 15px">
+			<div id="options" class="panel" style="background-image: url(./images/notebook_paper_200x200.gif); ">
+				<!-- <div style="height: 30px; width: 90%; border-bottom: 1px dashed #999; padding-top: 8px; margin-left: 15px">
 					<span class="letters">
-						<span class="firstLetter">A</span>bout	
+						Preview	
 					</span>
-				</div>
+				</div>  -->
 				<div id="about_scroller" class="wrapper">
 					<div id="aboutContent">
-						<textarea id="syntaxPane" class="w_textarea w_border w_radius w_bg_dark" cols="80" rows="20" readonly="readonly" style="width: 100%; "></textarea>
+						<pre id="syntaxPane"></pre>
 							<div id="previewPane" class="pane" >
-							<p>
-							Wink Toolkit is a lightweight JavaScript toolkit which will help you build great mobile web apps.
-						</p>
-						<p>
-							It is designed and developed to meet the specific constraints of the mobile environment.
-						</p>
-						<p>
-							The toolkit's core offers all the basic functionalities a mobile developer would need from touch event handling to DOM manipulation objects or CSS transforms utilities.
-						</p>
-						<p>
-							Additionally, it offers a wide range of UI components are offered to help you improve the look and feel of a web app, or simply to experiment with new user interactions.
-						</p>
-						<p>
-							Gesture recognition, HTML5 features like geolocation or local storage, multitouch events and many others are also part of the Wink Toolkit.
-						</p>
-						<p>
-							The project currently targets iOS (iPhone), Android platforms, Blackberry (6+), Bada...
-						</p></div>
-							<textarea id="outputPane" class="w_textarea w_border w_radius w_bg_dark" cols="80" rows="20" readonly="readonly" style="width: 100%; "></textarea>
+							</div>
+							<pre id="outputPane" class="w_textarea w_border w_radius w_bg_dark"></pre>
 					</div>
 
 				</div>
@@ -363,10 +369,14 @@
 						<a href="#" id="back" onclick="slideBack();" style="visibility:hidden;">
 							<img src="./images/back.png" height="44px">
 						</a>
+						
 						<!-- <a href="#" id="new_note" onclick="ks.options.toggle()" style="visibility:visible">
 							<img src="./images/icon/glyphicons_030_pencil.png" />
 						</a> -->
 						<span class="letters" style="position: absolute; bottom: 2px; right: 5px">
+							<a href="#" id="evernote" onclick="evernoteClip();" style="visibility:hidden;">
+							<img src="./images/en1.png" height="30px">
+						</a>
 							<span class="firstLetter">M</span>evernote
 						</span>
 					</div>
@@ -404,12 +414,7 @@
 						<div class="asp_text">loading...</div>
 					</div>
 					<div id="list">
-						<!-- <div id="tests_scroller" class="wrapper">
-							<div id="scrollContent">
-								<ul id="content" class="w_list w_border content">
-								</ul>
-							</div>
-						</div> -->
+						
 					</div>
 				</div>
 				<div id="test" class="panel">
@@ -421,26 +426,17 @@
 					</div>
 					<div id="testContent">
 						<div id="tests_scroller" class="wrapper">
-							<div id="scrollContent">
-								
-							</div>
+							
 						</div>
 					</div>
 				</div>
 			</div> <!-- end container -->
 			<div class="w_box" id="noteslist">
 				<div class="page">
-					<div id="tests_scroller" class="wrapper">
-							<div id="scrollContent">
+					<div id="list_scroller" class="wrapper">
+							<div id="listContent">
 								<ul id="content" class="w_list w_border content">
-									<li class="w_list_item w_border_bottom w_bg_light">
-										<a href="#" onclick="slide('edit_note')">Go to next page</a>
-										<span class="w_icon w_chevron"></span>
-									</li>
-									<li class="w_list_item w_border_bottom w_bg_light">
-										<a href="#" onclick="slide('page3')">Go to page 3</a>
-										<span class="w_icon w_chevron"></span>
-									</li>
+									
 								</ul>
 							</div>
 						</div> 
