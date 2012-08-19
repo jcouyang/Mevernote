@@ -206,7 +206,8 @@ function onPaneSettingChanged() {
 	previewPane.style.display = "none";
 	outputPane.style.display = "none";
 	syntaxPane.style.display = "none";
-
+	wink.byId('output-navigate-area').style.display="none";
+	wink.byId('syntax-navigate-area').style.display="none";
 	// now make the selected one visible
 	top[paneSetting.value].style.display = "block";
 
@@ -217,6 +218,8 @@ function onPaneSettingChanged() {
 		// Update output pane
 		outputPanePre.setValue(lastOutput);
 		outputPanePre.clearSelection();
+		wink.byId('output-navigate-area').style.display="block";
+		
 	} else if (paneSetting.value == "previewPane") {
 		// Update preview pane
 		previewPane.innerHTML = lastOutput;
@@ -224,6 +227,7 @@ function onPaneSettingChanged() {
 		// syntaxPanePre.setValue(lastOutput);
 		syntaxPanePre.setValue(help.value);
 		syntaxPanePre.clearSelection();
+		wink.byId('syntax-navigate-area').style.display="block";
 	}
 	restoreScrollPositions();
 }

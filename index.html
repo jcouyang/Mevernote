@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="./css/tests.css" type="text/css">
 		<link rel="stylesheet" href="./css/test.css" type="text/css">
 		<link rel="stylesheet" href="./wink/ui/layout/slidingpanels/css/slidingpanels.css" type="text/css">
-		<title>Take a note</title>
+		<title>Mevernote</title>
 
 		<style>
 			body, html 
@@ -66,6 +66,39 @@
 				width: 80px;
 				height: 60px;
 			}
+			.arrow {
+        background-color:transpiracy;
+		font-size:110px;
+        text-align:center;
+        color:white;
+        width:100%;
+        height:auto; 
+        position:reletive;
+        margin:auto;
+    	opacity: 0.25;
+      }
+      .black {
+      	color:gray;
+      }
+      .navigate-area {
+        width:100%;
+        height:600px;
+        z-index: 100;
+        position: absolute;
+        display: none;
+      }
+      #toggle-navigate {
+       width: 20%;
+height: 150px;
+z-index: 1000;
+margin-right: 40%;
+position: absolute;
+background-color: transparent;
+margin-left: 40%;
+margin-top: 50%;
+margin-bottom: 50%;
+visibility: hidden;
+      }
 		</style>
 		
 		<!-- THEME UTILITY -->
@@ -115,6 +148,7 @@
 				
 				slidingPanels.slideBack();
 				getNotes();
+				wink.byId('toggle-navigate').style.visibility = "hidden"
 			}	
 
 			changeTitle = function(params)
@@ -147,6 +181,7 @@
 			fillText = function(note)
 			{
 				currentNote=note;
+				wink.byId('toggle-navigate').style.visibility = "visible"
 				editor.setValue(note.markdown);
 				focusEditor();
 				
@@ -206,6 +241,16 @@
 				if(confirm("Will you confirm?"))
 						storage.remove('note',currentNote.id,{context:null,method:'slideBack'})
 			}
+
+			toggleNavigate = function () {
+				if (wink.byId('navigate-area').style.display=="block")
+					wink.byId('navigate-area').style.display="none";	
+				else
+					wink.byId('navigate-area').style.display="block";
+			}
+			// hideNavigate = function () {
+			// 	wink.byId('navigate-area').style.display="none";
+			// }
 			mailToEvernote = function()
 			{
 				// if("undefind" == typeof blackberry){
@@ -308,6 +353,7 @@
 						
 						// console.log('hreere2')
 						editor = ace.edit("inputPane");
+						
 						syntaxPanePre = ace.edit("syntaxPane");
     					editor.setTheme("ace/theme/twilight");
     					editor.getSession().setMode("ace/mode/markdown");
@@ -317,8 +363,19 @@
     					
     					// syntaxPanePre.setTheme("ace/theme/twilight");
     					syntaxPanePre.getSession().setMode("ace/mode/markdown");
-
+    					editor.renderer.setHScrollBarAlwaysVisible(true);
+    					syntaxPanePre.renderer.setHScrollBarAlwaysVisible(true);
+    					outputPanePre.renderer.setHScrollBarAlwaysVisible(true);
     					// 
+    					syntaxPanePre.session.setUseWrapMode(true);
+            syntaxPanePre.session.setWrapLimitRange(80, 80);
+            syntaxPanePre.renderer.setPrintMarginColumn(80);
+            outputPanePre.session.setUseWrapMode(true);
+            outputPanePre.session.setWrapLimitRange(80, 80);
+            outputPanePre.renderer.setPrintMarginColumn(80);
+            editor.setAnimatedScroll(true);
+            syntaxPanePre.setAnimatedScroll(true);
+            outputPanePre.setAnimatedScroll(true);
 						// console.log('here first')
 						startGui();
 					}, 
@@ -358,7 +415,42 @@
 				</div>  -->
 				<div id="about_scroller" class="wrapper">
 					<div id="aboutContent" style="width:100%;">
-						
+						<table id="output-navigate-area" class="navigate-area">
+				      <tr>
+				        <td> </td>
+				      	<td> <div class="arrow black" onclick="outputPanePre.navigateUp();">&#9650;</div> </td>
+				        <td><div class="arrow black" onclick="outputPanePre.scrollPageUp();">Page Up</div> </td>
+				      </tr>
+				      <tr>
+				        <td> <div class="arrow black" onclick="outputPanePre.navigateLeft();">&#9668;</div> </td>
+				        <td><div id="navigate" onclick="outputPanePre.navigateRight();"></div></td>
+				      	
+				        <td> <div class="arrow black" onclick="outputPanePre.navigateRight();">&#9658;</div> </td>
+				      </tr>
+				      <tr>
+				        <td></td>
+				      	<td> <div class="arrow black" onclick="outputPanePre.navigateDown();">&#9660;</div> </td>
+				        <td><div class="arrow black" onclick="outputPanePre.scrollPageDown()">Page Down</div> </td>
+				      </tr>
+				    </table>
+				    <table id="syntax-navigate-area" class="navigate-area">
+				      <tr>
+				        <td> </td>
+				      	<td> <div class="arrow black" onclick="syntaxPanePre.navigateUp();">&#9650;</div> </td>
+				        <td><div class="arrow black" onclick="syntaxPanePre.scrollPageUp();">Page Up</div> </td>
+				      </tr>
+				      <tr>
+				        <td> <div class="arrow black" onclick="syntaxPanePre.navigateLeft();">&#9668;</div> </td>
+				        <td><div id="navigate" onclick="syntaxPanePre.navigateRight();"></div></td>
+				      	
+				        <td> <div class="arrow black" onclick="syntaxPanePre.navigateRight();">&#9658;</div> </td>
+				      </tr>
+				      <tr>
+				        <td></td>
+				      	<td> <div class="arrow black" onclick="syntaxPanePre.navigateDown();">&#9660;</div> </td>
+				        <td><div class="arrow black" onclick="syntaxPanePre.scrollPageDown()">Page Down</div> </td>
+				      </tr>
+				    </table>
 						<div id="previewPane" class="pane"></div>
 						<pre id="syntaxPane"></pre>
 						<pre id="outputPane"></pre>
@@ -427,6 +519,7 @@
 					<div id="loader" class="w_window w_border w_radius w_bg_dark asp_loader">
 						<div class="asp_text">loading...</div>
 					</div>
+					<div id="toggle-navigate" class=asp_loader onclick="toggleNavigate();"></div>
 					<div id="list">
 						
 					</div>
@@ -439,6 +532,7 @@
 						<div id="title"></div>
 					</div>
 					<div id="testContent">
+
 						<div id="tests_scroller" class="wrapper">
 							
 						</div>
@@ -459,7 +553,25 @@
 			<div class="w_box" id="edit_note">
 				<div class="page">
 					
-									<pre id="inputPane"></pre>
+					<table id="navigate-area" class="navigate-area">
+				      <tr>
+				        <td> <div class="arrow" onclick="editor.scrollPageUp();">Page Up</div> </td>
+				      	<td> <div class="arrow" onclick="editor.navigateUp();">&#9650;</div> </td>
+				        <td></td>
+				      </tr>
+				      <tr>
+				        <td> <div class="arrow" onclick="editor.navigateLeft();">&#9668;</div> </td>
+				        <td><div id="navigate" onclick="toggleNavigate();"></div></td>
+				      	
+				        <td> <div class="arrow" onclick="editor.navigateRight();">&#9658;</div> </td>
+				      </tr>
+				      <tr>
+				        <td></td>
+				      	<td> <div class="arrow" onclick="editor.navigateDown();">&#9660;</div> </td>
+				        <td><div class="arrow" onclick="editor.scrollPageDown()">Page Down</div> </td>
+				      </tr>
+				    </table>
+					<pre id="inputPane"></pre>
 								
 				</div>
 			</div>
